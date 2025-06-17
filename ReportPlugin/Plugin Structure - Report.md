@@ -1,6 +1,6 @@
-
-# Folder Structure: survey-filter-plugin
+## Plugin Structure
 The following folder structure is much more organised than the SurveyPlugin folder since it was made after. For now this plugin structure should server as the standard until the plugins are refactored.
+### Folder Structure: survey-filter-plugin
 - Root of the plugin:
   - The structural order of files within this plugin should be much more organised than the main plugin due to the fact that the purpose and functions needed for this plugin was clear enough to structure the folders accordingly as I've already written similar code in the main plugin.
 - assets
