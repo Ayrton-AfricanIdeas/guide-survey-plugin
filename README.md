@@ -15,7 +15,7 @@ This repository holds two wordpress plugins.
 SurveyPlugin: This is the main survey plugin that alows users to create, manage and answer surveys.
 survey-filter-plugin: This plugin generates reports based on answers and survey questions.
 
-## Prerequisits
+## Prerequisites
 These plugins make the bulk of the site. The WordPress site itself uses a blank theme, with minor changes and no styling. For the plug-ins to work, we need to create tables that the plug-ins use, I will reserve this space as a reminder to update the plugins to create the necessary tables on load.
 There should be no other prerequisits.
 
