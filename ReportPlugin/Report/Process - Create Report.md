@@ -1,4 +1,5 @@
 # Create Report
+This is documentation for the process file `process/process_create_report.php`
 
 Initialising the variables `$current_user_id` is only really needed to get the `company_id` which is a user meta field to identify the company a particular user is under. Only users under the subscriber role are under a company_id.
 We can cross reference the company_id against the unique field `id` to get the value of the field `name` of that record from the table `cr_companies`. But typically, we really only need the `company_id`.
