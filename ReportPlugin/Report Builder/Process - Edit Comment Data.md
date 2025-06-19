@@ -1,4 +1,5 @@
 # Report Builder - Comment data
+This is documentation for the process file `process\process-save-comments-form-builder.php`
 
 The first check on this process is to make sure that there are comment data to update or record. As simple as the conditional check is, it is important to note that if there is no comment data to update or record, we have to clear all comment data in the `report_survey_comments` table where the fields `report_id` and `cq_uid` in the table `report_survey_comments` matches the values of `$report_id` and `$q_uid` respectively in the function `delete_all_comments` found at the bottom of the process.
 ```
