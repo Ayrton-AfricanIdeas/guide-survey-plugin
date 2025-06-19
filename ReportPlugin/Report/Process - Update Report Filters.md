@@ -14,7 +14,48 @@ $family_title = isset($_POST['family_title']) ? sanitize_text_field($_POST['fami
 $report_logo = isset($_POST['report_logo']) ? esc_url_raw($_POST['report_logo']) : null;
 ```
 
+
 The fields `$update_fields` are dependant on whether the previously mentioned variables return any values, and the variable `$formats` follow the correct data types corresponding with the returned `$update_fields`
+```
+$update_fields = [];
+$formats = [];
+
+// Include only fields that are set to avoid overwriting with null values
+if (!is_null($filters)) {
+    $update_fields['filters'] = $filters;
+    $formats[] = "%s";
+}
+if (!is_null($comparison_json)) {
+    $update_fields['comparison'] = $comparison_json;
+    $formats[] = "%s";
+}else{
+    $update_fields['comparison'] = "{}";
+    $formats[] = "%s";
+}
+if (!is_null($report_title)) {
+    $update_fields['report_title'] = $report_title;
+    $formats[] = "%s";
+}
+if (!is_null($resident_title)) {
+    $update_fields['resident_name'] = $resident_title;
+    $formats[] = "%s";
+}
+if (!is_null($family_title)) {
+    $update_fields['family_name'] = $family_title;
+    $formats[] = "%s";
+}
+if (!is_null($report_logo)) {
+    $update_fields['logo_url'] = $report_logo;
+    $formats[] = "%s";
+}
+
+// If no valid data is provided, return an error
+if (empty($update_fields)) {
+    wp_send_json_error(['message' => 'No valid data provided to update.']);
+}
+```
+
+As you can see the update query is dynamic. The `$updated` variable should not attempt to update fields that return null for the available fields in the corresponding record.
 ```
 // Perform the update
 $updated = $wpdb->update(
