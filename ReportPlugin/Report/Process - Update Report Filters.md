@@ -1,4 +1,5 @@
 # Update Report Options
+This is documentation for the process file `process/process_update_report_filters.php`
 
 The initialised variables returning null is used as a check to determine whether the report record on `report_list` gets updated and which fields either get updated or cleared.
 Note that the variable `$report_id` cannot return null, if it some how does then the process will simply end without making changes.
