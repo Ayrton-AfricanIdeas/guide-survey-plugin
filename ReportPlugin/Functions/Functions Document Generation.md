@@ -17,3 +17,7 @@ This function simply queries the row that matches the `q_uid` of the comparison 
 
 ### Function return_filter:
 The two locations this function is used in is the processes `process/download-excel-comparison` and `process/download-excel-matrix`, both used to generate excel reports. Its used to query and filter out the responses based on previously selected filter options in the report's options section.
+
+### Function get_potential_filter_options:
+This function queries the survey of a report to get all question records from the table `question_list` with the question type `radio`, `checkbox` and `conditional_radio`, the options of these question types can potentially be used as filter options.
+There is a real reason for querying these records, you would have to take a look at argument `$radio_questions` the function `get_rating_answers`, which this `get_potential_filter_options` would typically get passed though, and note how the argument gets applied. Note that the variable name `$radio_questions` is legacy, originally only radio question types would be accepted as filter options, but now we accept `radio`, `checkbox` and `conditional_radio` question types.
