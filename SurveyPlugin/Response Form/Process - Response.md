@@ -51,3 +51,18 @@ function get_survey_status($is_variant, $form_code) {
     return $result ? $result->status : 'closed';
 }
 ```
+### Update Response
+The order of operations in this process is that we should first check if there is a response record to update, otherwise we simply create a new response record.
+It would be useful to familiarise yourself with the table structure of the `survey_responses` table. The structure is explained `SurveyPlugin/Table Structure/Table Structure - Responses.md`
+
+Before performing an update, `$existing_record` is a variable initialised to check if there are any records that exist in the table
+```
+    // Check if the record exists
+    $existing_record = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT COUNT(*) FROM survey_responses WHERE survey_id = %s AND rq_uid = %s",
+            $survey_id,
+            $q_uid
+        )
+    );
+```
