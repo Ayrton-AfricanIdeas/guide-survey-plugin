@@ -14,9 +14,23 @@ Within the PHP function `filter_layout` it generates a javascript function withi
 Once the ajax request returns succesfully the potential filters will populate the fields in the filter layout.
 
 #### Store Selected Filters
-Within the PHP function `filter_layout`, the 
+Within the PHP function `filter_layout`, the javascript function `applyFilter` is generated and gets executes once the button with the id `#applyFilter` is clicked.
 ```
 $('#applyFilter').on('click', function() {
     applyFilter();
 });
 ```
+An AJAX request triggers the `fn_filter_survey_responses` process. The function that executes this process is defined in `survey_plugin.php` and shares the same name. The selected filter options on the frontend are passed to the process via the AJAX request, which then either updates, inserts, or deletes a record in the `filtered_survey_filters` table. This action is based on a match between the user ID of the person selecting the filters and the survey ID they are viewing.
+Once the AJAX request completes successfully, the page reloads.
+
+#### Clear Selected Filters
+The PHP function `filter_layout` generates a JavaScript function that deletes a record from the `filtered_survey_filters` table, based on a match between the user ID and the survey ID. This is done to clear any previously applied filters.
+
+The button with the ID `clearFilter` triggers an AJAX request that executes the `fn_clear_survey_filters process`, which simply deletes the corresponding record. Once the AJAX request completes successfully, the page reloads. This process is defined in `survey_plugin.php`.
+```
+// **Clear Filter Button**
+$('#clearFilter').on('click', function() {
+...
+```
+Note: There's no particular reason why `applyFilter()` has its own named function while the "Clear Selected Filters" logic is defined inline within the click event. Once we are ready to refactor the plugin, we can revisit this decision and determine the most appropriate structure. For now, this distinction shouldn't have any significant impact.
+
