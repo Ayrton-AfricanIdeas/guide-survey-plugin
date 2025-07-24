@@ -10,7 +10,7 @@ The process that stores these filters is called `fn_filter_survey_responses` and
 The function used to generate the filter is called `filter_layout`.
 ### Process Filter Survey
 #### On Load - Populate Stored Filters
-Within the PHP function `filter_layout` it generates a javascript function within a script tag called `populateStoredFilters`. On load, this function executes and retrieves potential filters already stored by the user for the survey responses they are viewing. The process `fn_get_stored_filters` executes when the ajax request within the function `populateStoredFilters` runs sends the retrieved potential filters to the frontend to populate the generated filters accordinly. Please review the process `fn_get_stored_filters` function in `survey_plugin.php`.
+Within the PHP function `filter_layout` it generates a javascript function within a script tag called `populateStoredFilters`. On load, this function executes and retrieves potential filters already stored by the user for the survey responses they are viewing. The process `fn__stored_filters` executes when the ajax request within the function `populateStoredFilters` runs sends the retrieved potential filters to the frontend to populate the generated filters accordinly. Please review the process `fn_get_stored_filters` function in `survey_plugin.php`.
 Once the ajax request returns succesfully the potential filters will populate the fields in the filter layout.
 
 #### Store Selected Filters
@@ -34,3 +34,35 @@ $('#clearFilter').on('click', function() {
 ```
 Note: There's no particular reason why `applyFilter()` has its own named function while the "Clear Selected Filters" logic is defined inline within the click event. Once we are ready to refactor the plugin, we can revisit this decision and determine the most appropriate structure. For now, this distinction shouldn't have any significant impact.
 
+### Query Results
+Querying the results goes through quite a few conditions depending on the responses on the survey. The main function that you should consider reviewing is called `get_filtered_responses`. The second function would be `get_responses`, which is simply the queried results if there are no filters in place for the survey that is being viewed.
+
+```
+// Use correct table for filters
+$filter_table = "filtered_survey_filters";
+
+// Retrieve all stored filters for this user and form
+$stored_filters = $wpdb->get_results($wpdb->prepare(
+    "SELECT question_id, selected_answers FROM $filter_table WHERE user_id = %d AND form_code = %s",
+    $user_id, $form_code
+));
+
+// Convert results into an array format
+$filters = [];
+foreach ($stored_filters as $filter) {
+    $filters[$filter->question_id] = maybe_unserialize($filter->selected_answers);
+}
+
+// Apply filters if they exist
+if (!empty($filters)) {
+    $responses = get_filtered_responses($form_code, $filters);
+} else {
+    // No stored filters, load full survey responses
+    if($view == 'responses'){
+        $responses = get_responses($form_code, $show_all ? null : $limit);
+    }else{
+        $responses = get_responses($form_code, $show_all ? null : $limit, true);
+    }
+    
+}
+```
