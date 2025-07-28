@@ -66,3 +66,20 @@ if (!empty($filters)) {
     
 }
 ```
+Once the results are queried and initialised as the variable `$responses` get looped and organised into an array called `$survey` to be called later when displaying the survey responses or summaries.
+
+```
+// Organize responses by survey_id
+$surveys = [];
+foreach ($responses as $response) {
+    $surveys[$response->survey_id]['questions'][] = [
+        'survey_id' => $response->survey_id,
+        'question_id' => $response->question_id,
+        'question_value' => $response->question_value,
+        'question_type' => $response->question_type,
+        'options' => maybe_unserialize($response->options),
+        'answer' => maybe_unserialize($response->answer),
+        'date_created' => $response->date_created
+    ];
+}
+```
